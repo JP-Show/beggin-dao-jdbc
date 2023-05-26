@@ -18,7 +18,7 @@ public class Program {
 
 		Seller seller = new Seller(1, "Andre","andreluiz@gmail.com", LocalDate.parse("04/04/2000", ftm), 4000.00, obj);
 		
-		System.out.println(seller);
+		
 		
 		/*
 		 * a gente não precisa dar um new SellerDaoJDBC
@@ -29,6 +29,10 @@ public class Program {
 		 * */
 		SellerDao sellerDao = DaoFactory.createSellerDao();
 		
+		
+		
+		System.out.println(sellerDao.findById(3));
+		System.out.println(seller);
 	}
 
 }
