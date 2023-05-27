@@ -55,6 +55,12 @@ public class Program {
 		Seller newSelller = new Seller(null, "Greg", "greg@gmail.com", LocalDate.parse("22/02/2000", ftm), 4000.0, obj);
 		sellerDao.insert(newSelller);
 		System.out.println("Inserted! New id = " + newSelller.getId());
+		System.out.println("test 5");
+		seller = sellerDao.findById(1);
+		seller.setName("Andre Luiz");
+		sellerDao.update(seller);
+		System.out.println();
+		
 	}
 
 }
