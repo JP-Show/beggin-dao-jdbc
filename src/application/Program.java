@@ -14,7 +14,7 @@ public class Program {
 	public static void main(String[] args) {
 		DateTimeFormatter ftm = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 		
-		Department obj = new Department(1, "Jr.Dev Java");
+		Department obj = new Department(1, "null");
 		System.out.println(obj);
 
 		Seller seller = new Seller(1, "Andre","andreluiz@gmail.com", LocalDate.parse("04/04/2000", ftm), 4000.00, obj);
@@ -51,7 +51,10 @@ public class Program {
 			System.out.println(selle.toString());
 			
 		}
-		
+		System.out.println("Test 3");
+		Seller newSelller = new Seller(null, "Greg", "greg@gmail.com", LocalDate.parse("22/02/2000", ftm), 4000.0, obj);
+		sellerDao.insert(newSelller);
+		System.out.println("Inserted! New id = " + newSelller.getId());
 	}
 
 }
