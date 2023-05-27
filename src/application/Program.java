@@ -1,8 +1,6 @@
 package application;
 
 import java.util.Date;
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 import model.dao.DaoFactory;
@@ -12,9 +10,10 @@ import model.entities.Seller;
 
 public class Program {
 
-	@SuppressWarnings("deprecation")
+
 	public static void main(String[] args) {
-		DateTimeFormatter ftm = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+		
+		/*
 		
 		Department obj = new Department(1, "null");
 		System.out.println(obj);
@@ -23,13 +22,12 @@ public class Program {
 		
 		
 		
-		/*
-		 * a gente não precisa dar um new SellerDaoJDBC
-		 * a gente simplesmente chama a fabrica
-		 * dessa forma o meu programa a não conhece a implementação
-		 * ele conhece somente a interface e é também uma forma da a gente
-		 * fazer a injeção de depedencia sem esplicitar a implementação
-		 * */
+		
+		 //a gente não precisa dar um new SellerDaoJDBC
+		 //a gente simplesmente chama a fabrica
+		 //dessa forma o meu programa a não conhece a implementação
+		 //ele conhece somente a interface e é também uma forma da a gente
+		 //fazer a injeção de depedencia sem esplicitar a implementação
 		
 		SellerDao sellerDao = DaoFactory.createSellerDao();
 		
@@ -65,7 +63,9 @@ public class Program {
 		sellerDao.update(seller);
 		System.out.println();
 		sellerDao.deleteById(1);
+	
 		
+		*/
 	}
 
 }
