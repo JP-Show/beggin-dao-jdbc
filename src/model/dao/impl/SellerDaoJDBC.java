@@ -5,7 +5,10 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import db.DB;
 import db.DbException;
@@ -15,29 +18,29 @@ import model.entities.Seller;
 import util.DataConvert;
 
 public class SellerDaoJDBC implements SellerDao {
-	
+
 	private Connection conn;
-	
+
 	public SellerDaoJDBC(Connection conn) {
 		this.conn = conn;
 	}
-	
+
 	@Override
 	public void insert(Seller obj) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void update(Seller obj) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void deleteById(Integer id) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
@@ -46,41 +49,34 @@ public class SellerDaoJDBC implements SellerDao {
 		ResultSet rs = null;
 		try {
 			st = conn.prepareStatement(
-					
-					"SELECT seller.*,department.Name as DepName "
-					+ "FROM seller INNER JOIN department "
-					+ "ON seller.DepartmentId = department.Id "
-					+ "WHERE seller.Id = ?"
-					);
-			
+
+					"SELECT seller.*,department.Name as DepName " + "FROM seller INNER JOIN department "
+							+ "ON seller.DepartmentId = department.Id " + "WHERE seller.Id = ?");
+
 			st.setInt(1, id);
 			rs = st.executeQuery();
-			
+
 			/*
-			 *Quando a gente ta programando um sistema orientado a objetos
-			 *mesmo eu buscando os dados no banco de dados na forma de tabela na memória
-			 *do computador eu vou querer ter os objetos associados distanciados 
-			 * */
-			//esse if é para testar se veio algum resutaldo
-			
-			if(rs.next()) {
+			 * Quando a gente ta programando um sistema orientado a objetos mesmo eu
+			 * buscando os dados no banco de dados na forma de tabela na memória do
+			 * computador eu vou querer ter os objetos associados distanciados
+			 */
+			// esse if é para testar se veio algum resutaldo
+
+			if (rs.next()) {
 				Department dep = instantiateDepartment(rs);
-				
+
 				Seller seller = instantiateSeller(rs, dep);
 				return seller;
 			}
 			return null;
-			
-		}catch(SQLException e) {
-		throw new DbException(e.getMessage());
-		}finally {
+
+		} catch (SQLException e) {
+			throw new DbException(e.getMessage());
+		} finally {
 			DB.closeStatement(st);
 			DB.closeResultSet(rs);
 		}
-		
-		
-		
-
 	}
 
 	private Seller instantiateSeller(ResultSet rs, Department dep) throws SQLException {
@@ -90,13 +86,13 @@ public class SellerDaoJDBC implements SellerDao {
 		seller.setEmail(rs.getString("Email"));
 		seller.setBaseSalary(rs.getDouble("BaseSalary"));
 
-		LocalDate date = DataConvert.dateForLocalDate(rs.getDate("BirthDate")) ;			
+		LocalDate date = DataConvert.dateForLocalDate(rs.getDate("BirthDate"));
 		seller.setBirthDate(date);
 		seller.setDepartment(dep);
-		return null;
+		return seller;
 	}
 
-	private Department instantiateDepartment(ResultSet rs) throws SQLException  {
+	private Department instantiateDepartment(ResultSet rs) throws SQLException {
 		Department dep = new Department();
 		dep.setId(rs.getInt("DepartmentId"));
 		dep.setName(rs.getString("DepName"));
@@ -107,6 +103,46 @@ public class SellerDaoJDBC implements SellerDao {
 	public List<Seller> findAll() {
 		// TODO Auto-generated method stub
 		return null;
+	}
+
+	@Override
+	public List<Seller> findByDepartment(Department department) {
+
+		PreparedStatement st = null;
+		ResultSet rs = null;
+		try {
+			st = conn.prepareStatement(
+
+					"SELECT seller.*,department.Name as DepName " + "FROM seller INNER JOIN department "
+							+ "ON seller.DepartmentId = department.Id " + "WHERE DepartmentId = ? " + "ORDER BY Name");
+
+			st.setInt(1, department.getId());
+			rs = st.executeQuery();
+
+			List<Seller> list = new ArrayList<>();
+			Map<Integer, Department> map = new HashMap<>();
+
+			while (rs.next()) {
+				Department dep = map.get(rs.getInt("DepartmentId"));
+				
+				if (dep == null) {
+					dep = instantiateDepartment(rs);
+					map.put(rs.getInt("DepartmentId"), dep);
+
+				}
+
+				Seller seller = instantiateSeller(rs, dep);
+				list.add(seller);
+			}
+			return list;
+
+		} catch (SQLException e) {
+			throw new DbException(e.getMessage());
+		} finally {
+			DB.closeStatement(st);
+			DB.closeResultSet(rs);
+		}
+
 	}
 
 }

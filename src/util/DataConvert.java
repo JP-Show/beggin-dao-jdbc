@@ -6,9 +6,7 @@ import java.util.Date;
 public class DataConvert {
 
 	public static LocalDate dateForLocalDate (Date date) {
-		LocalDate newDate = LocalDate.parse(date.toString());
-		
-		return newDate;
+		return LocalDate.parse(date.toString());
 	}
 	
 }
