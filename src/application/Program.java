@@ -27,6 +27,7 @@ public class Program {
 		 * ele conhece somente a interface e é também uma forma da a gente
 		 * fazer a injeção de depedencia sem esplicitar a implementação
 		 * */
+		
 		SellerDao sellerDao = DaoFactory.createSellerDao();
 		
 		
