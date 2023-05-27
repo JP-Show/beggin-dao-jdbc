@@ -45,6 +45,12 @@ public class Program {
 			System.out.println(selle.toString());
 			
 		}
+		System.out.println("Test 3");
+		List<Seller> de= sellerDao.findAll();
+		for(Seller selle : de) {
+			System.out.println(selle.toString());
+			
+		}
 		
 	}
 
