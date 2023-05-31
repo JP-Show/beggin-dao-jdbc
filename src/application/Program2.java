@@ -11,7 +11,11 @@ public class Program2 {
 		
 		//depDao.insert(new Department(null, "Jr"));
 	
-		depDao.update(new Department(11, "Junior"));
+		//depDao.update(new Department(11, "Junior"));
+		
+		for(Department dep : depDao.findAll() ) {
+			System.out.println(dep.toString());
+		}
 	}
 
 }
