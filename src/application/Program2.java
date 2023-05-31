@@ -16,6 +16,9 @@ public class Program2 {
 		for(Department dep : depDao.findAll() ) {
 			System.out.println(dep.toString());
 		}
+		
+		System.out.println(depDao.findById(1));
 	}
+	
 
 }
