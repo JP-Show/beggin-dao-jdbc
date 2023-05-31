@@ -24,16 +24,25 @@ public class DepartmentDaoJDBC implements DepartmentDao {
 	public void insert(Department obj) {
 		PreparedStatement st = null;
 		try {
+			//aqui é preparando o SQL, algum script sql
 			st = conn.prepareStatement("INSERT INTO department " + "(Name) " + "VALUES " + "(?)",
+					//aqui é para pegar o id que o sql gerar lá no banco
 					Statement.RETURN_GENERATED_KEYS);
+			//aqui é adicionando valor
 			st.setString(1, obj.getName());
+			//aqui é armazendo as linhas que foram mutadas, por exemplo, se caso você inseriu um dado, o valor vai ser 1
 			int rowsAffected = st.executeUpdate();
-
+			//aqui se caso mudar vai entrar na condição
 			if (rowsAffected > 0) {
+				//parar pegar o que gerar de id no Statement.RETURN_GERENATED_KE;YS
 				ResultSet rs = st.getGeneratedKeys();
+				//aqui se caso o houver algum conteudo na linha, ele vai entrar no caso
 				if (rs.next()) {
+					//aqui vai armazenar o id
 					int id = rs.getInt(1);
+					//aqui ta armazenamento o obj que ta no parametro e recebendo o id que foi gerado o mysql
 					obj.setId(id);
+					// aqui estamos fechando o ResultSet
 					DB.closeResultSet(rs);
 				}
 			}
@@ -48,8 +57,28 @@ public class DepartmentDaoJDBC implements DepartmentDao {
 
 	@Override
 	public void update(Department obj) {
-		// TODO Auto-generated method stub
-
+		PreparedStatement st = null;	
+		try {
+			st = conn.prepareStatement(
+					
+					"UPDATE department "
+					+ "SET Name = ?"
+					+ "WHERE Id = ?"
+					);
+			
+			st.setString(1, obj.getName());
+			st.setInt(2, obj.getId());
+			
+			//como não vamos inserir nada novo, e nem retornar nada, só mandar o st.executeUpdate();
+			st.executeUpdate();
+			
+			
+			
+		}catch(SQLException e) {
+			throw new DbException(e.getMessage());
+		}finally {
+			DB.closeStatement(st);
+		}
 	}
 
 	@Override

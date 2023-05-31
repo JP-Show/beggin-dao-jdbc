@@ -7,10 +7,11 @@ import model.entities.Department;
 public class Program2 {
 
 	public static void main(String[] args) {
-		// TODO Auto-generated method stub
 		DepartmentDao depDao = DaoFactory.createDepDao();
 		
-		depDao.insert(new Department(null, "Jr"));
+		//depDao.insert(new Department(null, "Jr"));
+	
+		depDao.update(new Department(11, "Junior"));
 	}
 
 }
