@@ -18,6 +18,8 @@ public class Program2 {
 		}
 		
 		System.out.println(depDao.findById(1));
+		
+		depDao.deleteById(4);
 	}
 	
 
